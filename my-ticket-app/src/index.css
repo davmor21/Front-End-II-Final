@@ -1,22 +1,58 @@
+/*---- Core color variables for light mode ----*/
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  --bg: #242424;
-  --fg: rgba(255, 255, 255, 0.87);
-  --primary: #646cff;
-  --card-bg: #2a2a2a;
-  --button-bg: #1a1a1a;
-  --accent: #535bf2;
+  /* page background */
+  --bg: #ffffff;
+  /* main text color */
+  --fg: #222222;
+  /* background for cards, panels */
+  --card-bg: #f8f9fa;
+  /* default button background */
+  --button-bg: #e9ecef;
 }
+
+/*---- Dark mode overrides based on user preference ----*/
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #242424;                    /* dark page background */
+    --fg: rgba(255,255,255,0.87);     /* light text for contrast */
+    --card-bg: #2a2a2a;               /* dark cards */
+    --button-bg: #1a1a1a;             /* dark buttons */
+  }
+}
+
+/*---- Body layout ----*/
 body {
-  margin: 0;
   background: var(--bg);
   color: var(--fg);
-  min-height: 100vh;
+  min-height: 100vh;                 /* full height so footer stays at bottom */
   display: flex;
   flex-direction: column;
 }
-a { color: var(--primary); text-decoration: none; }
-a:hover { color: var(--accent); }
+
+/*---- Override Bootstrap card ----*/
+.card {
+  background: var(--card-bg) !important;  /* force our card bg */
+  color: var(--fg) !important;            /* force text color */
+  border: none;                           /* drop default border */
+}
+
+/*---- Override Bootstrap buttons ----*/
+.btn {
+  background: var(--button-bg) !important;
+  color: var(--fg) !important;
+  border-color: var(--fg) !important;
+}
+
+/*---- Link styling ----*/
+a {
+  color: var(--primary);
+  text-decoration: none;
+}
+a:hover {
+  color: var(--accent);
+}
+
+/*---- Plain <button> overrides ----*/
 button {
   background: var(--button-bg);
   color: var(--fg);
@@ -25,27 +61,45 @@ button {
   border-radius: 6px;
   cursor: pointer;
 }
-button:hover { opacity: 0.9; }
+button:hover {
+  opacity: 0.9;
+}
+
+/*---- Central container ----*/
 .container {
-  max-width: 1200px;
-  margin: 0 auto;
+  max-width: 1200px;              /* limit width on large screens */
+  margin: 0 auto;                /* center horizontally */
   padding: 1rem;
-  flex: 1;
+  flex: 1;                        /* allow flex children to grow */
 }
+
+/*---- Navbar colors match cards ----*/
 .navbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: var(--card-bg);
-  padding: 0.75rem 1rem;
+  background-color: var(--card-bg) !important;
 }
-.navbar a { margin: 0 0.5rem; }
-.navbar a.active { text-decoration: underline; }
+.navbar .navbar-brand,
+.navbar .nav-link,
+.navbar .btn {
+  color: var(--fg) !important;
+}
+.navbar .nav-link:hover {
+  color: var(--primary) !important;
+}
+.navbar a {
+  margin: 0 0.5rem;
+}
+.navbar a.active {
+  text-decoration: underline;
+}
+
+/*---- Event listing grid ----*/
 .event-grid {
   display: grid;
   gap: 1rem;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
 }
+
+/*---- Individual event card ----*/
 .event-card {
   background: var(--card-bg);
   border-radius: 8px;
@@ -55,8 +109,8 @@ button:hover { opacity: 0.9; }
 }
 .event-card img {
   width: 100%;
-  height: 150px;
-  object-fit: cover;
+  height: 150px;              /* fixed height for uniform grid */
+  object-fit: cover;          /* crop/scale to fill */
 }
 .event-card-content {
   padding: 0.75rem;
@@ -65,6 +119,8 @@ button:hover { opacity: 0.9; }
   flex-direction: column;
   justify-content: space-between;
 }
+
+/*---- Event details page layout ----*/
 .event-details {
   display: flex;
   flex-wrap: wrap;
@@ -75,14 +131,25 @@ button:hover { opacity: 0.9; }
   max-width: 500px;
   border-radius: 8px;
 }
-.event-info { max-width: 500px; }
+.event-info {
+  max-width: 500px;
+}
+
+/*---- Cart item styling ----*/
 .cart-item {
   background: var(--card-bg);
   padding: 1rem;
   margin-bottom: 1rem;
   border-radius: 8px;
 }
-.profile-section, .booking-history {
+.cart-item img {
+  height: 150px;              /* match card image height */
+  object-fit: cover;
+}
+
+/*---- Profile / booking history spacing ----*/
+.profile-section,
+.booking-history {
   margin-top: 1rem;
 }
 .booking-card {
@@ -91,7 +158,21 @@ button:hover { opacity: 0.9; }
   border-radius: 8px;
   margin-bottom: 1rem;
 }
+
+/*---- Success page center alignment ----*/
 .success-page {
   text-align: center;
   padding: 2rem;
+}
+
+/*---- Force uniform Bootstrap card-top images ----*/
+.card-img-top {
+  height: 250px;          /* adjust as needed */
+  object-fit: cover;
+}
+
+/*---- Force uniform images in cart items ----*/
+.cart-item img {
+  height: 150px;
+  object-fit: cover;
 }

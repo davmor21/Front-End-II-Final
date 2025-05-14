@@ -15,20 +15,22 @@ export default function ProfilePage() {
         where('userId', '==', currentUser.uid),
         orderBy('createdAt', 'desc')
       );
-      const snapshot = await getDocs(q);
-      setBookings(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+      const snap = await getDocs(q);
+      setBookings(snap.docs.map(d => ({ id: d.id, ...d.data() })));
     }
     fetchBookings();
   }, [currentUser]);
 
   return (
     <div className="container my-4">
-      <div className="card p-4">
+      <div className="card p-4 mx-auto" style={{ maxWidth: '700px' }}>
         <h1>Profile</h1>
         {currentUser ? (
           <>
             <p><strong>Email:</strong> {currentUser.email}</p>
-            <button className="btn btn-outline-danger mb-4" onClick={logout}>Logout</button>
+            <button className="btn btn-outline-danger mb-4" onClick={logout}>
+              Logout
+            </button>
 
             <h2>Booking History</h2>
             {bookings.length === 0 ? (
@@ -39,10 +41,12 @@ export default function ProfilePage() {
                   <div className="card-body">
                     <h5 className="card-title">Booking ID: {b.id}</h5>
                     <p className="card-text"><strong>Total:</strong> ${b.total.toFixed(2)}</p>
-                    <p className="card-text"><strong>Date:</strong> {new Date(b.createdAt.toDate()).toLocaleString()}</p>
+                    <p className="card-text">
+                      <strong>Date:</strong> {new Date(b.createdAt.toDate()).toLocaleString()}
+                    </p>
                     <ul>
-                      {b.items.map(item => (
-                        <li key={item.id}>{item.title} × {item.quantity}</li>
+                      {b.items.map(i => (
+                        <li key={i.id}>{i.title} × {i.quantity}</li>
                       ))}
                     </ul>
                   </div>
@@ -51,7 +55,7 @@ export default function ProfilePage() {
             )}
           </>
         ) : (
-          <p>Please <a href="/login">log in</a> to view your profile.</p>
+          <p>Please <Link to="/login">log in</Link> to view your profile.</p>
         )}
       </div>
     </div>

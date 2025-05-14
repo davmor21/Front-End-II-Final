@@ -9,7 +9,7 @@ export default function SignupPage() {
   const { signUp } = useAuth();
   const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async e => {
     e.preventDefault();
     try {
       await signUp(email, password);
@@ -21,7 +21,7 @@ export default function SignupPage() {
 
   return (
     <div className="container my-4">
-      <div className="card p-4 mx-auto" style={{ maxWidth: '500px' }}>
+      <div className="card p-4 mx-auto" style={{ maxWidth: '400px' }}>
         <h1 className="mb-3">Sign Up</h1>
         {error && <div className="alert alert-danger">{error}</div>}
         <form onSubmit={handleSubmit}>
@@ -45,7 +45,7 @@ export default function SignupPage() {
               required
             />
           </div>
-          <button type="submit" className="btn btn-primary w-100">Sign Up</button>
+          <button className="btn btn-primary w-100">Sign Up</button>
         </form>
         <p className="mt-3 text-center">
           Already have an account? <Link to="/login">Login</Link>
