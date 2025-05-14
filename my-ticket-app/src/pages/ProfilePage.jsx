@@ -1,40 +1,59 @@
+import React, { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
-import { useState, useEffect } from 'react';
 import { db } from '../firebaseConfig';
-import { collection, query, where, getDocs, orderBy } from 'firebase/firestore';
+import { collection, query, where, orderBy, getDocs } from 'firebase/firestore';
 
-export default function ProfilePage(){
+export default function ProfilePage() {
   const { currentUser, logout } = useAuth();
-  const [bookings,setBookings] = useState([]);
+  const [bookings, setBookings] = useState([]);
 
-  useEffect(()=>{
-    async function fetchData(){
-      if(currentUser) {
-        const q = query(collection(db,'bookings'), where('userId','==',currentUser.uid), orderBy('createdAt','desc'));
-        const snap = await getDocs(q);
-        setBookings(snap.docs.map(d=>({id:d.id,...d.data()})));
-      }
+  useEffect(() => {
+    async function fetchBookings() {
+      if (!currentUser) return;
+      const q = query(
+        collection(db, 'bookings'),
+        where('userId', '==', currentUser.uid),
+        orderBy('createdAt', 'desc')
+      );
+      const snapshot = await getDocs(q);
+      setBookings(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
     }
-    fetchData();
-  },[currentUser]);
+    fetchBookings();
+  }, [currentUser]);
 
-  if(!currentUser) return <p>Please log in to view your profile.</p>;
   return (
-    <>
-      <h1>Profile</h1>
-      <p><strong>Email:</strong> {currentUser.email}</p>
-      <button onClick={logout}>Logout</button>
-      <div className="profile-section">
-        <h2>Booking History</h2>
-        {bookings.length===0 ? <p>No bookings yet.</p> : bookings.map(b=>(
-          <div className="booking-card" key={b.id}>
-            <p><strong>ID:</strong> {b.id}</p>
-            <p><strong>Total:</strong> ${b.total.toFixed(2)}</p>
-            <p><strong>Date:</strong> {new Date(b.createdAt.toDate()).toLocaleString()}</p>
-            <ul>{b.items.map(i=><li key={i.id}>{i.title} x {i.quantity}</li>)}</ul>
-          </div>
-        ))}
+    <div className="container my-4">
+      <div className="card p-4">
+        <h1>Profile</h1>
+        {currentUser ? (
+          <>
+            <p><strong>Email:</strong> {currentUser.email}</p>
+            <button className="btn btn-outline-danger mb-4" onClick={logout}>Logout</button>
+
+            <h2>Booking History</h2>
+            {bookings.length === 0 ? (
+              <p>No bookings yet.</p>
+            ) : (
+              bookings.map(b => (
+                <div className="card mb-3" key={b.id}>
+                  <div className="card-body">
+                    <h5 className="card-title">Booking ID: {b.id}</h5>
+                    <p className="card-text"><strong>Total:</strong> ${b.total.toFixed(2)}</p>
+                    <p className="card-text"><strong>Date:</strong> {new Date(b.createdAt.toDate()).toLocaleString()}</p>
+                    <ul>
+                      {b.items.map(item => (
+                        <li key={item.id}>{item.title} × {item.quantity}</li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              ))
+            )}
+          </>
+        ) : (
+          <p>Please <a href="/login">log in</a> to view your profile.</p>
+        )}
       </div>
-    </>
+    </div>
   );
 }
