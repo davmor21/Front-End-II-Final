@@ -18,6 +18,15 @@
     --card-bg: #2a2a2a;               /* dark cards */
     --button-bg: #1a1a1a;             /* dark buttons */
   }
+  /* Make the border of the hamburger button use our fg color */
+  .navbar-toggler {
+    border-color: var(--fg) !important;
+  }
+
+  /* Invert the default icon SVG so it appears white */
+  .navbar-toggler-icon {
+    filter: brightness(0) invert(1) !important;
+  }
 }
 
 /*---- Body layout ----*/
@@ -176,3 +185,110 @@ button:hover {
   height: 150px;
   object-fit: cover;
 }
+
+/* Mobile adjustments */
+@media (max-width: 576px) {
+  /* Make container padding slimmer so content fills more of the screen */
+  .container {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+
+  /* Stack event cards one per row, full width */
+  .event-grid {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+  
+  /* Shrink margins on cards and buttons for a tighter feel */
+  .card, .booking-card, .cart-item {
+    margin-bottom: 0.75rem;
+  }
+  .btn {
+    padding: 0.5em 1em;
+    font-size: 0.9rem;
+  }
+
+  /* Make navbar links wrap neatly and increase tappable area */
+  .navbar-nav {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .navbar .nav-link, .navbar .btn {
+    padding: 0.6rem 1rem;
+  }
+
+  /* Ensure images stay responsive */
+  .card-img-top,
+  .event-card img,
+  .cart-item img {
+    height: auto;        /* let height adjust */
+    max-height: 200px;   /* cap it so cards don’t get huge */
+    object-fit: cover;
+  }
+
+  /* Scale down headings slightly */
+  h1 { font-size: 1.8rem; }
+  h2 { font-size: 1.5rem; }
+  p, .card-text, .form-label { font-size: 0.95rem; }
+}
+
+@media (max-width: 576px) {
+  /* Give the collapsed menu its own bg & padding */
+  .navbar-collapse {
+    background: var(--card-bg);
+    padding: 1rem;
+  }
+
+  /* When Bootstrap adds .show, make it block so you can close it again */
+  .navbar-collapse.show {
+    display: block !important;
+  }
+
+  /* Stack items and align left */
+  .navbar-nav {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    margin: 0;         /* reset any auto margins */
+  }
+  .navbar-nav.ms-auto {
+    margin-left: 0 !important;  /* kill the ms-auto push */
+  }
+
+  /* Make each link/button fill the width */
+  .navbar-nav .nav-item {
+    width: 100%;
+    margin-bottom: 0.5rem;
+  }
+  .navbar-nav .nav-link,
+  .navbar-nav .btn {
+    width: 100%;
+    text-align: left;
+    padding-left: 0;   /* line up with container */
+  }
+
+  /* Keep the toggler icon on the right */
+  .navbar-toggler {
+    margin-left: auto;
+  }
+   /* Stack search + sort and add breathing room */
+  .row.mb-3 {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 0.75rem;
+  }
+
+  /* Make each input full-width */
+  .row.mb-3 .col-md-6,
+  .row.mb-3 .col-md-3 {
+    max-width: 100% !important;
+    flex: 1 1 auto !important;
+  }
+
+  /* Optional: slightly reduce input height so they look better stacked */
+  .row.mb-3 .form-control,
+  .row.mb-3 .form-select {
+    padding: 0.5rem 0.75rem;
+  }
+}
+
